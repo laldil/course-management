@@ -1,0 +1,18 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: course-service
+  datasource:
+    username: postgres
+    password: 7777
+    url: jdbc:postgresql://localhost:5432/course_service
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+application:
+  config:
+    url:
+      auth-service: http://localhost:8083/api/auth
