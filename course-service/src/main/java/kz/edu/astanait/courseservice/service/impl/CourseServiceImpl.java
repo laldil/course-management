@@ -5,6 +5,7 @@ import kz.edu.astanait.courseservice.client.UserClient;
 import kz.edu.astanait.courseservice.dto.CourseResponse;
 import kz.edu.astanait.courseservice.dto.CreateCourseRequest;
 import kz.edu.astanait.courseservice.dto.FullUserDto;
+import kz.edu.astanait.courseservice.dto.UpdateCourseRequest;
 import kz.edu.astanait.courseservice.dto.UserDto;
 import kz.edu.astanait.courseservice.dto.api.ApiDataResponse;
 import kz.edu.astanait.courseservice.dto.api.ApiListResponse;
@@ -13,7 +14,6 @@ import kz.edu.astanait.courseservice.model.CourseEntity;
 import kz.edu.astanait.courseservice.repository.CourseRepository;
 import kz.edu.astanait.courseservice.service.CourseService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -109,5 +109,15 @@ public class CourseServiceImpl implements CourseService {
                 .orElseThrow(() -> new RuntimeException("Course not found"));
         courseRepository.delete(course);
         return true;
+    }
+
+    @Override
+    public CourseEntity update(Long courseId, UpdateCourseRequest request) {
+        CourseEntity course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        CourseMapper.INSTANCE.update(request, course);
+
+        return courseRepository.save(course);
     }
 }

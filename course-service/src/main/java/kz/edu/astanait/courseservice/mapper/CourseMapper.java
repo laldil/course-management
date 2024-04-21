@@ -2,8 +2,12 @@ package kz.edu.astanait.courseservice.mapper;
 
 import kz.edu.astanait.courseservice.dto.CourseResponse;
 import kz.edu.astanait.courseservice.dto.CreateCourseRequest;
+import kz.edu.astanait.courseservice.dto.UpdateCourseRequest;
 import kz.edu.astanait.courseservice.model.CourseEntity;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -17,4 +21,7 @@ public interface CourseMapper {
     CourseEntity mapToEntity(CreateCourseRequest request);
 
     CourseResponse mapToResponseDto(CourseEntity entity);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void update(UpdateCourseRequest request, @MappingTarget CourseEntity entity);
 }

@@ -1,6 +1,7 @@
 package kz.edu.astanait.courseservice.controller;
 
 import kz.edu.astanait.courseservice.dto.CreateCourseRequest;
+import kz.edu.astanait.courseservice.dto.UpdateCourseRequest;
 import kz.edu.astanait.courseservice.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -79,6 +80,15 @@ public class CourseController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(courseService.delete(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/{courseId}/update")
+    public ResponseEntity<?> update(@PathVariable Long courseId, @RequestBody UpdateCourseRequest request) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(courseService.update(courseId, request));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

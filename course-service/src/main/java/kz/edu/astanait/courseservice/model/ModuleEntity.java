@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,5 +33,5 @@ public class ModuleEntity {
 
     @OneToMany
     @JoinColumn(name = "module_id")
-    private List<AttachmentEntity> attachments;
+    private List<AttachmentEntity> attachments = new ArrayList<>();
 }

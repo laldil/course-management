@@ -2,6 +2,7 @@ package kz.edu.astanait.courseservice.service;
 
 import kz.edu.astanait.courseservice.dto.CourseResponse;
 import kz.edu.astanait.courseservice.dto.CreateCourseRequest;
+import kz.edu.astanait.courseservice.dto.UpdateCourseRequest;
 import kz.edu.astanait.courseservice.model.CourseEntity;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface CourseService {
     CourseResponse getById(Long id);
 
     Boolean delete(Long courseId);
+
+    CourseEntity update(Long courseId, UpdateCourseRequest request);
 }

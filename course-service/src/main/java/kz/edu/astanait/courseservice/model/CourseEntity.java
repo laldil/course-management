@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -50,5 +51,5 @@ public class CourseEntity {
     private Set<Long> studentsId;
 
     @OneToMany
-    private List<ModuleEntity> modules;
+    private List<ModuleEntity> modules = new LinkedList<>();
 }
