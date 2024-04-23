@@ -10,9 +10,7 @@ import lombok.Data;
  */
 @Data
 public class CreateAttachmentRequest {
-    @JsonProperty("attachment_type")
     private AttachmentType attachmentType;
 
-    @JsonProperty("attachment_text")
     private String attachmentText;
 }

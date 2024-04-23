@@ -11,6 +11,7 @@
         <module name="quiz-service" />
         <module name="authentication-service" />
         <module name="discovery-server" />
+        <module name="file-service" />
         <module name="gateway-service" />
       </profile>
     </annotationProcessing>
@@ -24,6 +25,7 @@
       <module name="authentication-service" options="-parameters" />
       <module name="course-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
+      <module name="file-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
       <module name="quiz-service" options="-parameters" />
     </option>
