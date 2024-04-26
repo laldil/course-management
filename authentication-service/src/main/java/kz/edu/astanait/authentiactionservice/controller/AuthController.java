@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author aldi
  * @since 23.03.2024
  */
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/auth")

@@ -13,11 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-/**
- * @author aldi
- * @since 31.03.2024
- */
-
 @FeignClient(name = "authentication-service", url = "${application.config.url.auth-service}")
 public interface UserClient {
     @GetMapping("/users-list")
@@ -28,5 +23,4 @@ public interface UserClient {
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PATCH)
     ApiDataResponse<FullUserDto> updateById(@PathVariable Long id, FullUserDto userDto);
-
 }
