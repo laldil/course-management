@@ -1,19 +1,19 @@
 package kz.edu.astanait.fileservice.service.impl;
 
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import kz.edu.astanait.fileservice.properties.MinioProperties;
+import kz.edu.astanait.fileservice.entity.FileEntity;
+import kz.edu.astanait.fileservice.repository.FileRepository;
 import kz.edu.astanait.fileservice.service.FileService;
+import kz.edu.astanait.fileservice.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.UUID;
+import java.util.Date;
 
 /**
  * @author aldi
@@ -21,68 +21,43 @@ import java.util.UUID;
  */
 
 
-// todo refactor
 @RequiredArgsConstructor
 @Service
 public class FileServiceImpl implements FileService {
 
-    private final MinioClient minioClient;
-    private final MinioProperties minioProperties;
+    private final MinioServiceImpl minioService;
+    private final FileRepository fileRepository;
 
     @Override
-    public Boolean upload(MultipartFile file) {
-        try {
-            createBucketIfNotExists();
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
+    public Boolean upload(MultipartFile file, Long userId) {
         if (file.isEmpty() || file.getOriginalFilename() == null) {
             throw new RuntimeException("File upload failed");
         }
-        String filename = generateFilename(file);
 
-        InputStream inputStream;
-        try {
-            inputStream = file.getInputStream();
+        var filename = FileUtils.generateFilename(file);
+        try (InputStream inputStream = file.getInputStream()) {
+            minioService.saveFile(inputStream, filename);
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
-        saveFile(inputStream, filename);
+
+        var fileEntity = FileEntity.builder()
+                .name(filename)
+                .originalName(file.getOriginalFilename())
+                .uploadedById(userId)
+                .uploadDate(new Date())
+                .build();
+        fileRepository.save(fileEntity);
 
         return true;
     }
 
-    @SneakyThrows
     @Override
-    public MultipartFile getFile() {
-        return null;
+    public Pair<String, Resource> getFile(Long id) {
+        var fileEntity = fileRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(String.format("File with id %d not found", id)));
+
+        return Pair.of(fileEntity.getOriginalName(), new InputStreamResource(minioService.getFileStream(fileEntity.getName())));
     }
 
-    @SneakyThrows
-    private void saveFile(InputStream inputStream, String filename) {
-        minioClient.putObject(PutObjectArgs.builder()
-                .stream(inputStream, inputStream.available(), -1)
-                .bucket(minioProperties.getBucket())
-                .object(filename)
-                .build());
-    }
-
-    @SneakyThrows
-    private void createBucketIfNotExists() {
-        boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(minioProperties.getBucket()).build());
-        if (!found) {
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(minioProperties.getBucket()).build());
-        }
-    }
-
-    private String generateFilename(MultipartFile file) {
-        String extension = getExtension(file);
-        return UUID.randomUUID().toString() + "." + extension;
-    }
-
-    private String getExtension(MultipartFile file) {
-        return file.getOriginalFilename()
-                .substring(file.getOriginalFilename().lastIndexOf(".") + 1);
-    }
 }

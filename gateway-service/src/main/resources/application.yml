@@ -31,3 +31,12 @@ spring:
             - Path=/api/quiz/**
           filters:
             - AuthenticationFilter
+
+        - id: file
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/files/**
+          filters:
+            - AuthenticationFilter
+
+
