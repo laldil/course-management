@@ -1,5 +1,7 @@
 package kz.edu.astanait.courseservice.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -50,6 +52,7 @@ public class CourseEntity {
     @Column(name = "students_id")
     private Set<Long> studentsId;
 
-    @OneToMany
+    @JsonManagedReference
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ModuleEntity> modules = new LinkedList<>();
 }

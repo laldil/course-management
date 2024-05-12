@@ -1,8 +1,7 @@
 package kz.edu.astanait.courseservice.service.impl;
 
-import kz.edu.astanait.courseservice.dto.CreateModuleRequest;
+import kz.edu.astanait.courseservice.dto.ModuleRequestDto;
 import kz.edu.astanait.courseservice.mapper.ModuleMapper;
-import kz.edu.astanait.courseservice.model.AttachmentEntity;
 import kz.edu.astanait.courseservice.model.CourseEntity;
 import kz.edu.astanait.courseservice.model.ModuleEntity;
 import kz.edu.astanait.courseservice.repository.CourseRepository;
@@ -28,20 +27,22 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Transactional
     @Override
-    public ModuleEntity create(CreateModuleRequest request, Long courseId) {
+    public ModuleEntity create(ModuleRequestDto request, Long courseId) {
         CourseEntity course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
 
         ModuleEntity module = ModuleMapper.INSTANCE.mapToEntity(request);
-        request.getAttachments().forEach(createAttachmentRequest -> {
-            AttachmentEntity attachment = attachmentService.create(createAttachmentRequest);
-            module.getAttachments().add(attachment);
-        });
-
+        module.setCourse(course);
         ModuleEntity savedModule = moduleRepository.save(module);
 
-        course.getModules().add(savedModule);
-        courseRepository.save(course);
+        request.getAttachments().forEach(createAttachmentRequest -> attachmentService.create(createAttachmentRequest, savedModule));
 
         return savedModule;
+    }
+
+    @Transactional
+    @Override
+    public Boolean delete(Long moduleId, Long courseId) {
+        moduleRepository.deleteById(moduleId);
+        return true;
     }
 }

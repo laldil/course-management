@@ -1,6 +1,6 @@
 package kz.edu.astanait.courseservice.service;
 
-import kz.edu.astanait.courseservice.dto.CreateModuleRequest;
+import kz.edu.astanait.courseservice.dto.ModuleRequestDto;
 import kz.edu.astanait.courseservice.model.ModuleEntity;
 
 /**
@@ -8,5 +8,8 @@ import kz.edu.astanait.courseservice.model.ModuleEntity;
  * @since 21.04.2024
  */
 public interface ModuleService {
-    ModuleEntity create(CreateModuleRequest request, Long courseId);
+    ModuleEntity create(ModuleRequestDto request, Long courseId);
+
+    Boolean delete(Long moduleId, Long courseId);
+
 }

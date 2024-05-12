@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 @Data
-public class CreateModuleRequest {
+public class ModuleRequestDto {
     private String title;
     private List<CreateAttachmentRequest> attachments;
 }

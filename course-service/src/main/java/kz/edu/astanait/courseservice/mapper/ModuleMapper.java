@@ -1,14 +1,13 @@
 package kz.edu.astanait.courseservice.mapper;
 
-import kz.edu.astanait.courseservice.dto.CreateModuleRequest;
-import kz.edu.astanait.courseservice.model.AttachmentEntity;
+import kz.edu.astanait.courseservice.dto.ModuleRequestDto;
 import kz.edu.astanait.courseservice.model.ModuleEntity;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author aldi
@@ -20,16 +19,6 @@ public interface ModuleMapper {
     ModuleMapper INSTANCE = Mappers.getMapper(ModuleMapper.class);
 
     @Mapping(target = "attachments", ignore = true)
-    ModuleEntity mapToEntity(CreateModuleRequest request);
+    ModuleEntity mapToEntity(ModuleRequestDto request);
 
-    default List<AttachmentEntity> mapToAttachmentEntity(CreateModuleRequest request) {
-        return request.getAttachments() == null || request.getAttachments().isEmpty()
-                ? Collections.emptyList()
-                : request.getAttachments().stream().map(attachment -> AttachmentEntity
-                .builder()
-                .attachmentType(attachment.getAttachmentType())
-                .attachmentText(attachment.getAttachmentText())
-                .build()
-        ).toList();
-    }
 }
