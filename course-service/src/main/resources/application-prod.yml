@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: course-service
+  datasource:
+    username: postgres
+    password: 7777
+    url: jdbc:postgresql://host.docker.internal:5432/course_service
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://host.docker.internal:8761/eureka
+
+application:
+  config:
+    url:
+      auth-service: http://host.docker.internal:8083/api/auth

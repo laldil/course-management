@@ -1,0 +1,28 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: file-service
+  datasource:
+    username: postgres
+    password: 7777
+    url: jdbc:postgresql://host.docker.internal:5432/file_service
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://host.docker.internal:8761/eureka
+
+minio:
+  bucket: files
+  url: https://play.min.io
+  accessKey: Q3AM3UQ867SPQQA43P2F
+  secretKey: zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG

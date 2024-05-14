@@ -7,4 +7,4 @@ FROM openjdk:17-jdk-slim-buster
 WORKDIR /app
 COPY --from=MAVEN_BUILD /app/discovery-server/target/discovery-server-0.0.1-SNAPSHOT.jar /app/discovery-server.jar
 
-CMD ["java", "-jar", "discovery-server.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=prod", "discovery-server.jar"]
