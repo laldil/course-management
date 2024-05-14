@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  authentication-service:
+    build: ./authentication-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - db
+      - discovery-server
+  course-service:
+    build: ./course-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+      - discovery-server
+  discovery-server:
+    build: ./discovery-server
+    ports:
+      - "8761:8761"
+    depends_on:
+      - db
+  file-service:
+    build: ./file-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - db
+      - discovery-server
+  gateway-service:
+    build: ./gateway-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - discovery-server
+  quiz-service:
+    build: ./quiz-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - db
+      - discovery-server
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 7777
+
+

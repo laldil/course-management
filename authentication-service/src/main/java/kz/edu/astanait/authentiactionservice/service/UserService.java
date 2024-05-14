@@ -85,13 +85,13 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public List<UserShortInfoDto> getAll(List<Role> roles) {
+    public List<UserProfileDto> getAll(List<Role> roles) {
         if (Objects.isNull(roles) || roles.isEmpty()) {
-            return userRepository.findAll().stream().map(UserMapper.INSTANCE::mapToShortInfo).toList();
+            return userRepository.findAll().stream().map(UserMapper.INSTANCE::mapToProfile).toList();
         } else {
             List<String> roleNames = roles.stream().map(Enum::name).toList();
             return userRepository.findByRoleNames(roleNames).stream()
-                    .map(UserMapper.INSTANCE::mapToShortInfo)
+                    .map(UserMapper.INSTANCE::mapToProfile)
                     .toList();
         }
     }

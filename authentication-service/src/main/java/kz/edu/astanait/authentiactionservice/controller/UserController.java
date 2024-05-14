@@ -50,7 +50,7 @@ public class UserController {
 
     // todo сделать всё в один рест через criteriaBuilder
     @GetMapping("/users-all")
-    public ResponseEntity<ApiListResponse<UserShortInfoDto>> getAll(@RequestParam(required = false) List<Role> roles) {
+    public ResponseEntity<ApiListResponse<UserProfileDto>> getAll(@RequestParam(required = false) List<Role> roles) {
         try {
             return ResponseEntity.ok().body(ApiListResponse.create(userService.getAll(roles)));
         } catch (Exception e) {
