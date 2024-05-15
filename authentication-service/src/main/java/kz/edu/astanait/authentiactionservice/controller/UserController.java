@@ -2,12 +2,16 @@ package kz.edu.astanait.authentiactionservice.controller;
 
 import kz.edu.astanait.authentiactionservice.controller.api.ApiDataResponse;
 import kz.edu.astanait.authentiactionservice.controller.api.ApiListResponse;
+import kz.edu.astanait.authentiactionservice.dto.UpdateUserRequest;
 import kz.edu.astanait.authentiactionservice.dto.UserProfileDto;
 import kz.edu.astanait.authentiactionservice.dto.UserShortInfoDto;
 import kz.edu.astanait.authentiactionservice.model.enums.Role;
 import kz.edu.astanait.authentiactionservice.service.UserService;
+import kz.edu.astanait.authentiactionservice.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,6 +75,16 @@ public class UserController {
     public ResponseEntity<ApiDataResponse<UserProfileDto>> updateById(@PathVariable Long id, @RequestBody UserProfileDto user) {
         try {
             return ResponseEntity.ok().body(ApiDataResponse.create(userService.updateById(id, user)));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiDataResponse.failed(e.getMessage()));
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @DeleteMapping("/user")
+    public ResponseEntity<ApiDataResponse<Boolean>> delete(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(ApiDataResponse.create(userService.delete(id)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiDataResponse.failed(e.getMessage()));
         }

@@ -12,7 +12,5 @@ import java.util.List;
  * @since 24.03.2024
  */
 public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
-    RoleEntity findByRole(Role role);
-
     List<RoleEntity> findByRoleIn(List<Role> role);
 }

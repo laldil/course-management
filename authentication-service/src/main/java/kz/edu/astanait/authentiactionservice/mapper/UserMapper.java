@@ -36,6 +36,7 @@ public interface UserMapper {
     UserProfileDto mapToProfile(UserEntity entity);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "roles", ignore = true)
     void updateFromDto(UserProfileDto dto, @MappingTarget UserEntity entity);
 
     default Set<Role> getRoles(UserEntity entity) {

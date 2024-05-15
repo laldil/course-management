@@ -2,6 +2,7 @@ package kz.edu.astanait.authentiactionservice.service;
 
 import kz.edu.astanait.authentiactionservice.dto.CreateUserRequest;
 import kz.edu.astanait.authentiactionservice.dto.CreateUserResponse;
+import kz.edu.astanait.authentiactionservice.dto.UpdateUserRequest;
 import kz.edu.astanait.authentiactionservice.dto.UserProfileDto;
 import kz.edu.astanait.authentiactionservice.dto.UserShortInfoDto;
 import kz.edu.astanait.authentiactionservice.mapper.UserMapper;
@@ -20,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -48,13 +50,13 @@ public class UserService implements UserDetailsService {
     public CreateUserResponse createUser(CreateUserRequest request) {
         validateCreateUserRequest(request);
 
-        RoleEntity role = roleRepository.findByRole(Role.STUDENT);
+        List<RoleEntity> roles = roleRepository.findByRoleIn(List.of(request.getRole()));
         UserEntity user = new UserEntity();
 
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRoles(Set.of(role));
+        user.setRoles(Set.copyOf(roles));
 
         UserEntity savedUser = userRepository.save(user);
         return UserMapper.INSTANCE.mapToCreateResponse(savedUser);
@@ -100,8 +102,18 @@ public class UserService implements UserDetailsService {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new BadCredentialsException("User not found"));
         UserMapper.INSTANCE.updateFromDto(user, userEntity);
 
+        List<RoleEntity> roles = roleRepository.findByRoleIn(user.getRoles().stream().toList());
+        userEntity.setRoles(new HashSet<>(roles));
+
         UserEntity savedUser = userRepository.save(userEntity);
         return UserMapper.INSTANCE.mapToProfile(savedUser);
+    }
+
+    public Boolean delete(Long id) {
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> new BadCredentialsException("User not found"));
+        userRepository.delete(user);
+        return true;
     }
 
     @Override
@@ -109,5 +121,4 @@ public class UserService implements UserDetailsService {
         UserEntity user = userRepository.findByEmail(email).get();
         return new User(user.getEmail(), user.getPassword(), user.getRoles());
     }
-
 }
