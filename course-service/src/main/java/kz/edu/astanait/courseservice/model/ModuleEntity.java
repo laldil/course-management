@@ -3,7 +3,9 @@ package kz.edu.astanait.courseservice.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +41,11 @@ public class ModuleEntity {
     @JsonManagedReference
     @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AttachmentEntity> attachments = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "module_files", joinColumns = @JoinColumn(name = "module_id"))
+    @Column(name = "file_id")
+    private List<Long> fileIds;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

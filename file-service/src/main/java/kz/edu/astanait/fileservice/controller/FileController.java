@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @author aldi
@@ -29,6 +32,24 @@ public class FileController {
     public ResponseEntity<?> uploadFile(@ModelAttribute UploadFileDto dto, @RequestParam Long userId) {
         try {
             return ResponseEntity.ok().body(fileService.upload(dto.getFile(), userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/upload-list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> uploadFileList(@RequestParam List<MultipartFile> files, @RequestParam Long userId) {
+        try {
+            return ResponseEntity.ok().body(fileService.uploadList(files, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getFileInfo(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok().body(fileService.getInfo(id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

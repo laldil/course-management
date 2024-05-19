@@ -34,7 +34,7 @@ public class ModuleController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> create(@PathVariable(name = "id") Long id, @RequestParam Long courseId) {
+    public ResponseEntity<?> delete(@PathVariable(name = "id") Long id, @RequestParam Long courseId) {
         try {
             return ResponseEntity.ok().body(moduleService.delete(id, courseId));
         } catch (Exception e) {

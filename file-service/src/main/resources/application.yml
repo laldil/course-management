@@ -16,6 +16,11 @@ spring:
     multipart:
       max-file-size: 10MB
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
 minio:
   bucket: files
   url: https://play.min.io

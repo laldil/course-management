@@ -1,4 +1,4 @@
-package kz.edu.astanait.fileservice.dto;
+package kz.edu.astanait.courseservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author aldi
- * @since 01.05.2024
+ * @since 16.05.2024
  */
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

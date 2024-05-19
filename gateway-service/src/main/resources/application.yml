@@ -4,6 +4,11 @@ server:
 jwt:
   secret: 1T9wsI8ZppRATQeVmbq0QTGN4St4XG2r89N39Ar65QLEUesmSJ
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
 spring:
   main:
     web-application-type: reactive

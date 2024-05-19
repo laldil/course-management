@@ -12,7 +12,13 @@ spring:
     hibernate:
       ddl-auto: update
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
 application:
   config:
     url:
       auth-service: http://localhost:8083/api/auth
+      file-service: http://localhost:8084/api/files

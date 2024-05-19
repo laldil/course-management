@@ -14,12 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author aldi
  * @since 26.04.2024
  */
-
 
 @RequiredArgsConstructor
 @Service
@@ -29,8 +29,8 @@ public class FileServiceImpl implements FileService {
     private final FileRepository fileRepository;
 
     @Override
-    public Boolean upload(MultipartFile file, Long userId) {
-        if (file.isEmpty() || file.getOriginalFilename() == null) {
+    public FileEntity upload(MultipartFile file, Long userId) {
+        if (file == null || file.getOriginalFilename() == null) {
             throw new RuntimeException("File upload failed");
         }
 
@@ -47,9 +47,12 @@ public class FileServiceImpl implements FileService {
                 .uploadedById(userId)
                 .uploadDate(new Date())
                 .build();
-        fileRepository.save(fileEntity);
+        return fileRepository.save(fileEntity);
+    }
 
-        return true;
+    @Override
+    public List<FileEntity> uploadList(List<MultipartFile> files, Long userId) {
+        return files.stream().map(file -> upload(file, userId)).toList();
     }
 
     @Override
@@ -60,4 +63,9 @@ public class FileServiceImpl implements FileService {
         return Pair.of(fileEntity.getOriginalName(), new InputStreamResource(minioService.getFileStream(fileEntity.getName())));
     }
 
+    @Override
+    public FileEntity getInfo(Long id) {
+        return fileRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("File not found"));
+    }
 }

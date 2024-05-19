@@ -13,4 +13,5 @@ import java.util.List;
 public class ModuleRequestDto {
     private String title;
     private List<CreateAttachmentRequest> attachments;
+    private List<Long> fileIds;
 }
