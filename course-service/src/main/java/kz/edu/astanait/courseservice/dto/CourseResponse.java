@@ -1,11 +1,9 @@
 package kz.edu.astanait.courseservice.dto;
 
-import kz.edu.astanait.courseservice.model.ModuleEntity;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author aldi
@@ -25,5 +23,5 @@ public class CourseResponse {
 
     private List<UserDto> students;
 
-    private List<ModuleEntity> modules;
+    private List<ModuleDto> modules;
 }

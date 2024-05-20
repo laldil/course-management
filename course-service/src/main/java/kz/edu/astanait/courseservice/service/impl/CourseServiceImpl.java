@@ -1,6 +1,7 @@
 package kz.edu.astanait.courseservice.service.impl;
 
 import jakarta.ws.rs.BadRequestException;
+import kz.edu.astanait.courseservice.client.FileClient;
 import kz.edu.astanait.courseservice.client.UserClient;
 import kz.edu.astanait.courseservice.dto.CourseResponse;
 import kz.edu.astanait.courseservice.dto.CreateCourseRequest;
@@ -10,6 +11,7 @@ import kz.edu.astanait.courseservice.dto.UserDto;
 import kz.edu.astanait.courseservice.dto.api.ApiDataResponse;
 import kz.edu.astanait.courseservice.dto.api.ApiListResponse;
 import kz.edu.astanait.courseservice.mapper.CourseMapper;
+import kz.edu.astanait.courseservice.mapper.ModuleMapper;
 import kz.edu.astanait.courseservice.model.CourseEntity;
 import kz.edu.astanait.courseservice.repository.CourseRepository;
 import kz.edu.astanait.courseservice.service.CourseService;
@@ -32,6 +34,7 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
 
     private final UserClient userClient;
+    private final FileClient fileClient;
 
     @Override
     public CourseEntity create(CreateCourseRequest request) {
@@ -62,6 +65,7 @@ public class CourseServiceImpl implements CourseService {
         List<CourseEntity> courseEntities = courseRepository.findByIdIn(ids);
         if (courseEntities.isEmpty()) throw new BadRequestException("Courses not found");
 
+        // todo write this logic in mappers
         return courseEntities.stream().map(courseEntity -> {
             ApiDataResponse<UserDto> instructorResponse = userClient.findUserById(courseEntity.getInstructorId());
             ApiListResponse<UserDto> students = userClient.findUsersByIdIn(courseEntity.getStudentsId().stream().toList());
@@ -69,6 +73,9 @@ public class CourseServiceImpl implements CourseService {
             CourseResponse response = CourseMapper.INSTANCE.mapToResponseDto(courseEntity);
             response.setInstructor(instructorResponse.getData());
             response.setStudents(students.getList());
+            response.setModules(courseEntity.getModules().stream().map(module ->
+                    ModuleMapper.INSTANCE.mapToDto(module, fileClient)).toList());
+
             return response;
         }).toList();
     }

@@ -6,6 +6,7 @@ import kz.edu.astanait.courseservice.dto.UpdateCourseRequest;
 import kz.edu.astanait.courseservice.model.CourseEntity;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
