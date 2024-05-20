@@ -102,8 +102,10 @@ public class UserService implements UserDetailsService {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new BadCredentialsException("User not found"));
         UserMapper.INSTANCE.updateFromDto(user, userEntity);
 
-        List<RoleEntity> roles = roleRepository.findByRoleIn(user.getRoles().stream().toList());
-        userEntity.setRoles(new HashSet<>(roles));
+        if (user.getRoles() != null) {
+            List<RoleEntity> roles = roleRepository.findByRoleIn(user.getRoles().stream().toList());
+            userEntity.setRoles(new HashSet<>(roles));
+        }
 
         UserEntity savedUser = userRepository.save(userEntity);
         return UserMapper.INSTANCE.mapToProfile(savedUser);

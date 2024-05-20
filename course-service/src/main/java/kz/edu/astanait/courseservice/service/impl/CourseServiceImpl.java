@@ -16,6 +16,7 @@ import kz.edu.astanait.courseservice.model.CourseEntity;
 import kz.edu.astanait.courseservice.repository.CourseRepository;
 import kz.edu.astanait.courseservice.service.CourseService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -27,6 +28,7 @@ import java.util.Set;
  * @since 10.02.2024
  */
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -97,6 +99,7 @@ public class CourseServiceImpl implements CourseService {
                 userClient.updateById(user.getId(), new FullUserDto(user.getCourseIds()));
             });
         } catch (Exception e) {
+            log.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
 
