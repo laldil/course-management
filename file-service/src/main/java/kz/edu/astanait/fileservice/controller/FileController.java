@@ -6,6 +6,7 @@ import kz.edu.astanait.fileservice.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,6 +65,15 @@ public class FileController {
                     .header(HttpHeaders.CONTENT_TYPE, "application/octet-stream")
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFirst() + "\"")
                     .body(file.getSecond());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteFile(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok().body(fileService.delete(id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

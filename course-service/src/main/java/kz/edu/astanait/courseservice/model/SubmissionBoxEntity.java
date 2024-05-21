@@ -3,9 +3,7 @@ package kz.edu.astanait.courseservice.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -14,23 +12,25 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author aldi
- * @since 13.02.2024
+ * @since 20.05.2024
  */
 
 @Getter
 @Setter
 @Entity
-@Table(name = "module")
-public class ModuleEntity {
+@Table(name = "submission_box")
+public class SubmissionBoxEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,21 +38,26 @@ public class ModuleEntity {
     @Column(name = "title")
     private String title;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AttachmentEntity> attachments = new ArrayList<>();
+    @Column(name = "created_by_id")
+    private Long createdById;
 
-    @ElementCollection
-    @CollectionTable(name = "module_files", joinColumns = @JoinColumn(name = "module_id"))
-    @Column(name = "file_id")
-    private List<Long> fileIds;
+    @Column(name = "created_date")
+    private Date createdDate;
+
+    @Column(name = "due_date")
+    private Date dueDate;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SubmissionBoxEntity> submissionBoxes = new ArrayList<>();
+    @OneToMany(mappedBy = "submissionBox", orphanRemoval = true)
+    private List<SubmissionEntity> submissions = new ArrayList<>();
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id", nullable = false)
-    private CourseEntity course;
+    @JoinColumn(name = "module_id")
+    private ModuleEntity module;
+
+    @PrePersist
+    protected void onCreate() {
+        createdDate = new Date();
+    }
 }

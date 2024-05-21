@@ -68,4 +68,10 @@ public class FileServiceImpl implements FileService {
         return fileRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("File not found"));
     }
+
+    @Override
+    public Boolean delete(Long id) {
+        fileRepository.deleteById(id);
+        return true;
+    }
 }

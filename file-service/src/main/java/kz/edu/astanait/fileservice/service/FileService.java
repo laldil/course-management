@@ -20,4 +20,6 @@ public interface FileService {
     Pair<String, Resource> getFile(Long id);
 
     FileEntity getInfo(Long id);
+
+    Boolean delete(Long id);
 }

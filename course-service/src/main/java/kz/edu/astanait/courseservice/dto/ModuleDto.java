@@ -1,5 +1,6 @@
 package kz.edu.astanait.courseservice.dto;
 
+import kz.edu.astanait.courseservice.dto.submission.SubmissionBoxDto;
 import kz.edu.astanait.courseservice.model.AttachmentEntity;
 import lombok.Data;
 
@@ -15,4 +16,5 @@ public class ModuleDto {
     private String title;
     private List<AttachmentEntity> attachments;
     private List<FileResponse> files;
+    private List<SubmissionBoxDto> submissionBoxes;
 }
