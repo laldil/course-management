@@ -43,4 +43,13 @@ public class SubmissionService {
         submission.getFileIds().forEach(fileClient::deleteFile);
         return true;
     }
+
+    public SubmissionDto get(Long submissionBoxId, Long userId) {
+        var box = submissionBoxRepository.findById(submissionBoxId)
+                .orElseThrow(() -> new RuntimeException("Submission box not found"));
+        var submission = submissionRepository.findBySubmissionBoxAndUploadedById(box, userId)
+                .orElseThrow(() -> new RuntimeException("Submission not found"));
+
+        return SubmissionMapper.INSTANCE.mapToDto(submission, fileClient, userClient);
+    }
 }

@@ -38,6 +38,9 @@ public class SubmissionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "comment")
+    private String comment;
+
     @Column(name = "uploaded_by_id")
     private Long uploadedById;
 

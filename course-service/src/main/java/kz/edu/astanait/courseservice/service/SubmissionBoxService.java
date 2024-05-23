@@ -45,4 +45,9 @@ public class SubmissionBoxService {
         var box = submissionBoxRepository.findById(id).orElseThrow(() -> new RuntimeException("Submission box not found"));
         return SubmissionBoxMapper.INSTANCE.mapToFullDto(box, userClient, fileClient);
     }
+
+    public SubmissionBoxDto getShortInfo(Long id) {
+        var box = submissionBoxRepository.findById(id).orElseThrow(() -> new RuntimeException("Submission box not found"));
+        return SubmissionBoxMapper.INSTANCE.mapToDto(box);
+    }
 }

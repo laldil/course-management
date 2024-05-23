@@ -17,6 +17,7 @@ import java.util.List;
 public class SubmissionDto {
     private Long id;
     private UserDto uploadedBy;
+    private String comment;
     private List<FileResponse> files;
     private Date uploadDate;
     private Date updateDate;

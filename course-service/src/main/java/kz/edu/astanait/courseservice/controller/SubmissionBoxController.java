@@ -28,7 +28,16 @@ public class SubmissionBoxController {
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(submissionBoxService.get(id));
+            return ResponseEntity.status(HttpStatus.OK).body(submissionBoxService.get(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}/short")
+    public ResponseEntity<?> getShortInfo(@PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(submissionBoxService.getShortInfo(id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -13,6 +13,7 @@ import java.util.Date;
 public class SubmissionBoxDto {
     private Long id;
     private String title;
+    private String description;
     private Long createdById;
     private Date createdDate;
     private Date dueDate;

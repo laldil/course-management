@@ -11,5 +11,6 @@ import java.util.List;
 @Data
 public class CreateSubmissionDto {
     private Long uploadedById;
+    private String comment;
     private List<Long> fileIds;
 }
