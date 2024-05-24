@@ -5,6 +5,7 @@ import io.minio.GetObjectArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
 import kz.edu.astanait.fileservice.properties.MinioProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -51,5 +52,11 @@ public class MinioServiceImpl {
                 .bucket(minioProperties.getBucket())
                 .object(fileName)
                 .build());
+    }
+
+    @SneakyThrows
+    public void removeFile(String filename) {
+        minioClient.removeObject(
+                RemoveObjectArgs.builder().bucket(minioProperties.getBucket()).object(filename).build());
     }
 }

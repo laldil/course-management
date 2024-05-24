@@ -12,4 +12,6 @@ import java.util.Optional;
  */
 public interface SubmissionRepository extends JpaRepository<SubmissionEntity, Long> {
     Optional<SubmissionEntity> findBySubmissionBoxAndUploadedById(SubmissionBoxEntity submissionBox, Long uploadedById);
+
+    Boolean existsByUploadedByIdAndSubmissionBoxId(Long uploadedById, Long submissionBoxId);
 }

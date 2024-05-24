@@ -7,10 +7,14 @@ import kz.edu.astanait.courseservice.dto.UserDto;
 import kz.edu.astanait.courseservice.dto.api.ApiDataResponse;
 import kz.edu.astanait.courseservice.dto.submission.CreateSubmissionDto;
 import kz.edu.astanait.courseservice.dto.submission.SubmissionDto;
+import kz.edu.astanait.courseservice.dto.submission.UpdateSubmissionRequest;
 import kz.edu.astanait.courseservice.model.SubmissionEntity;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -30,6 +34,10 @@ public interface SubmissionMapper {
     @Mapping(target = "files", expression = "java(getFilesInfo(entity.getFileIds(), fileClient))")
     @Mapping(target = "uploadedBy", expression = "java(getUserInfo(entity.getUploadedById(), userClient))")
     SubmissionDto mapToDto(SubmissionEntity entity, @Context FileClient fileClient, @Context UserClient userClient);
+
+    @Mapping(target = "uploadedById", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateEntity(UpdateSubmissionRequest request, @MappingTarget SubmissionEntity entity);
 
     default List<FileResponse> getFilesInfo(List<Long> fileIds, FileClient fileClient) {
         return fileIds.parallelStream().map(fileClient::getFileInfo).toList();

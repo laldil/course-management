@@ -71,6 +71,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public Boolean delete(Long id) {
+        FileEntity file = fileRepository.findById(id).orElseThrow(() -> new RuntimeException("File not found"));
+        minioService.removeFile(file.getName());
         fileRepository.deleteById(id);
         return true;
     }

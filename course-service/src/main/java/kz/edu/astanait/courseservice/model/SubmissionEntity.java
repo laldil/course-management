@@ -44,7 +44,7 @@ public class SubmissionEntity {
     @Column(name = "uploaded_by_id")
     private Long uploadedById;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "submission_files", joinColumns = @JoinColumn(name = "submission_id"))
     @Column(name = "file_id")
     private List<Long> fileIds;
