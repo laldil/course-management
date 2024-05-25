@@ -2,12 +2,15 @@ package kz.edu.astanait.courseservice.service;
 
 import kz.edu.astanait.courseservice.client.FileClient;
 import kz.edu.astanait.courseservice.client.UserClient;
+import kz.edu.astanait.courseservice.dto.GradeDto;
 import kz.edu.astanait.courseservice.dto.submission.CreateSubmissionDto;
 import kz.edu.astanait.courseservice.dto.submission.SubmissionDto;
 import kz.edu.astanait.courseservice.dto.submission.UpdateSubmissionRequest;
+import kz.edu.astanait.courseservice.mapper.GradeMapper;
 import kz.edu.astanait.courseservice.mapper.SubmissionMapper;
 import kz.edu.astanait.courseservice.model.SubmissionEntity;
 import kz.edu.astanait.courseservice.model.enums.SubmissionStatus;
+import kz.edu.astanait.courseservice.repository.GradeRepository;
 import kz.edu.astanait.courseservice.repository.SubmissionBoxRepository;
 import kz.edu.astanait.courseservice.repository.SubmissionRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ import java.util.concurrent.CompletableFuture;
 public class SubmissionService {
     private final SubmissionRepository submissionRepository;
     private final SubmissionBoxRepository submissionBoxRepository;
+    private final GradeRepository gradeRepository;
 
     private final FileClient fileClient;
     private final UserClient userClient;
@@ -72,5 +76,17 @@ public class SubmissionService {
         SubmissionMapper.INSTANCE.updateEntity(request, submission);
         var saved = submissionRepository.save(submission);
         return SubmissionMapper.INSTANCE.mapToDto(saved, fileClient, userClient);
+    }
+
+    public SubmissionDto setGrade(Long id, GradeDto dto) {
+        var submission = submissionRepository.findById(id).orElseThrow(() -> new RuntimeException("Submission not found"));
+
+        var grade = GradeMapper.INSTANCE.mapToEntity(dto, submission);
+        var savedGrade = gradeRepository.save(grade);
+
+        submission.setGrade(savedGrade);
+        var savedSubmission = submissionRepository.save(submission);
+
+        return SubmissionMapper.INSTANCE.mapToDto(savedSubmission, fileClient, userClient);
     }
 }

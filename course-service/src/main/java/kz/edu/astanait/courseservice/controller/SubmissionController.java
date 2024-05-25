@@ -1,5 +1,6 @@
 package kz.edu.astanait.courseservice.controller;
 
+import kz.edu.astanait.courseservice.dto.GradeDto;
 import kz.edu.astanait.courseservice.dto.submission.CreateSubmissionDto;
 import kz.edu.astanait.courseservice.dto.submission.UpdateSubmissionRequest;
 import kz.edu.astanait.courseservice.service.SubmissionService;
@@ -31,7 +32,7 @@ public class SubmissionController {
     @GetMapping
     public ResponseEntity<?> get(@RequestParam Long submissionBoxId, @RequestParam Long userId) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(submissionService.get(submissionBoxId, userId));
+            return ResponseEntity.status(HttpStatus.OK).body(submissionService.get(submissionBoxId, userId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -49,7 +50,16 @@ public class SubmissionController {
     @PutMapping("/{submissionBoxId}")
     public ResponseEntity<?> update(@RequestBody UpdateSubmissionRequest request, @PathVariable Long submissionBoxId) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(submissionService.update(request, submissionBoxId));
+            return ResponseEntity.status(HttpStatus.OK).body(submissionService.update(request, submissionBoxId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/grade")
+    public ResponseEntity<?> setGrade(@PathVariable Long id, @RequestBody GradeDto dto) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(submissionService.setGrade(id, dto));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
