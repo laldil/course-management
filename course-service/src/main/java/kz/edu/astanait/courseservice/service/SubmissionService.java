@@ -1,8 +1,11 @@
 package kz.edu.astanait.courseservice.service;
 
 import kz.edu.astanait.courseservice.client.FileClient;
+import kz.edu.astanait.courseservice.client.ScoreClient;
 import kz.edu.astanait.courseservice.client.UserClient;
 import kz.edu.astanait.courseservice.dto.GradeDto;
+import kz.edu.astanait.courseservice.dto.UpdateScoreRequest;
+import kz.edu.astanait.courseservice.dto.enums.ScoreTransactionType;
 import kz.edu.astanait.courseservice.dto.submission.CreateSubmissionDto;
 import kz.edu.astanait.courseservice.dto.submission.SubmissionDto;
 import kz.edu.astanait.courseservice.dto.submission.UpdateSubmissionRequest;
@@ -14,8 +17,10 @@ import kz.edu.astanait.courseservice.repository.GradeRepository;
 import kz.edu.astanait.courseservice.repository.SubmissionBoxRepository;
 import kz.edu.astanait.courseservice.repository.SubmissionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -23,6 +28,7 @@ import java.util.concurrent.CompletableFuture;
  * @since 21.05.2024
  */
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class SubmissionService {
@@ -32,6 +38,7 @@ public class SubmissionService {
 
     private final FileClient fileClient;
     private final UserClient userClient;
+    private final ScoreClient scoreClient;
 
     public SubmissionDto create(CreateSubmissionDto dto, Long submissionBoxId) {
         Boolean exists = submissionRepository.existsByUploadedByIdAndSubmissionBoxId(dto.getUploadedById(), submissionBoxId);
@@ -85,6 +92,16 @@ public class SubmissionService {
         var savedGrade = gradeRepository.save(grade);
 
         submission.setGrade(savedGrade);
+        if (Objects.isNull(submission.getScored()) || !submission.getScored()) {
+            try {
+                scoreClient.update(new UpdateScoreRequest(submission.getUploadedById(), submission.getGrade().getGrade(), ScoreTransactionType.ADD));
+                submission.setScored(true);
+            } catch (Exception e) {
+                submission.setScored(false);
+                log.error(e.getMessage());
+            }
+        }
+
         var savedSubmission = submissionRepository.save(submission);
 
         return SubmissionMapper.INSTANCE.mapToDto(savedSubmission, fileClient, userClient);

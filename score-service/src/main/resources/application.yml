@@ -1,0 +1,18 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: score-service
+  datasource:
+    username: postgres
+    password: 7777
+    url: jdbc:postgresql://localhost:5432/score_service
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka

@@ -30,10 +30,10 @@ spring:
           filters:
             - AuthenticationFilter
 
-        - id: quiz
-          uri: http://localhost:8082
+        - id: score
+          uri: http://localhost:8085
           predicates:
-            - Path=/api/quiz/**
+            - Path=/api/score/**
           filters:
             - AuthenticationFilter
 

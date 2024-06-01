@@ -69,6 +69,9 @@ public class SubmissionEntity {
     @JoinColumn(name = "submission_box_id")
     private SubmissionBoxEntity submissionBox;
 
+    @Column(name = "scored")
+    private Boolean scored = false;
+
     @PrePersist
     protected void onCreate() {
         updateDate = new Date();

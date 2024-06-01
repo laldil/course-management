@@ -22,3 +22,4 @@ application:
     url:
       auth-service: http://localhost:8083/api/auth
       file-service: http://localhost:8084/api/files
+      score-service: http://localhost:8085/api/score

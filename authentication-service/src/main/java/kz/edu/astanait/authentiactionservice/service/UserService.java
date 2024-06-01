@@ -1,5 +1,6 @@
 package kz.edu.astanait.authentiactionservice.service;
 
+import kz.edu.astanait.authentiactionservice.client.ScoreClient;
 import kz.edu.astanait.authentiactionservice.dto.CreateUserRequest;
 import kz.edu.astanait.authentiactionservice.dto.CreateUserResponse;
 import kz.edu.astanait.authentiactionservice.dto.UpdateUserRequest;
@@ -37,13 +38,15 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
+    private final ScoreClient scoreClient;
     private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, ScoreClient scoreClient, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.scoreClient = scoreClient;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -59,6 +62,8 @@ public class UserService implements UserDetailsService {
         user.setRoles(Set.copyOf(roles));
 
         UserEntity savedUser = userRepository.save(user);
+        scoreClient.create(savedUser.getId());
+
         return UserMapper.INSTANCE.mapToCreateResponse(savedUser);
     }
 

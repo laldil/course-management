@@ -34,6 +34,6 @@ public class BlogEntity {
     @Column(name = "date")
     private Date date;
 
-    @Column(name = "summary")
+    @Column(name = "summary", length = 4096)
     private String summary;
 }
