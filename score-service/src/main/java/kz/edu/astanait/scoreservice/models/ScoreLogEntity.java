@@ -44,4 +44,7 @@ public class ScoreLogEntity {
 
     @Column(name = "amount")
     private BigDecimal amount;
+
+    @Column(name = "score_after_transaction")
+    private BigDecimal scoreAfterTransaction;
 }

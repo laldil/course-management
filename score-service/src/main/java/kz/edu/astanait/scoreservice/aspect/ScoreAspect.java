@@ -35,6 +35,7 @@ public class ScoreAspect {
         log.setCreatedDate(new Date());
         log.setTransactionType(request.getTransactionType());
         log.setAmount(request.getAmount());
+        log.setScoreAfterTransaction(updatedScore.getCurrentScore());
 
         scoreLogRepository.save(log);
     }

@@ -1,12 +1,17 @@
 package kz.edu.astanait.scoreservice.service;
 
+import kz.edu.astanait.scoreservice.client.UserClient;
+import kz.edu.astanait.scoreservice.dto.ScoreDto;
 import kz.edu.astanait.scoreservice.dto.UpdateScoreRequest;
+import kz.edu.astanait.scoreservice.dto.UserDto;
 import kz.edu.astanait.scoreservice.models.ScoreEntity;
 import kz.edu.astanait.scoreservice.repository.ScoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author aldi
@@ -17,6 +22,8 @@ import java.util.List;
 @Service
 public class ScoreService {
     private final ScoreRepository scoreRepository;
+
+    private final UserClient userClient;
 
     public ScoreEntity getByUser(Long userId) {
         return scoreRepository.findByUserId(userId)
@@ -47,7 +54,16 @@ public class ScoreService {
         return scoreRepository.save(score);
     }
 
-    public List<ScoreEntity> getScoreTop() {
-        return scoreRepository.findTop20ByOrderByAllTimeScoreDesc();
+    public List<ScoreDto> getScoreTop() {
+        var top = scoreRepository.findTop20ByOrderByAllTimeScoreDesc();
+
+        var userIds = top.stream().map(ScoreEntity::getUserId).toList();
+        var users = userClient.findUsersByIdIn(userIds).getList();
+        Map<Long, UserDto> userMap = users.stream()
+                .collect(Collectors.toMap(UserDto::getId, user -> user));
+
+        return top.stream()
+                .map(score -> new ScoreDto(userMap.get(score.getUserId()), score.getAllTimeScore()))
+                .toList();
     }
 }
