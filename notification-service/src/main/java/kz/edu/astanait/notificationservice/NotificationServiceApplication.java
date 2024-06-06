@@ -1,4 +1,4 @@
-package kz.edu.astanait.courseservice;
+package kz.edu.astanait.notificationservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,10 +10,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
-public class CourseServiceApplication {
+public class NotificationServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CourseServiceApplication.class, args);
+        SpringApplication.run(NotificationServiceApplication.class, args);
     }
 
 }

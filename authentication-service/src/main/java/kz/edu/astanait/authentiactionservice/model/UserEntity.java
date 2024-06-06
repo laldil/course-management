@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -43,6 +44,27 @@ public class UserEntity {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "tg_id")
+    private Long tgId;
+
+    @Column(name = "tg_auth_date")
+    private Date tgAuthDate;
+
+    @Column(name = "tg_username")
+    private String tgUserName;
+
+    @Column(name = "tg_first_name")
+    private String tgFirstName;
+
+    @Column(name = "tg_last_name")
+    private String tgLastName;
+
+    @Column(name = "receive_tg_notification")
+    private Boolean receiveTgNotification;
+
+    @Column(name = "receive_email_notification")
+    private Boolean receiveEmailNotification;
 
     @ManyToMany
     @JoinTable(

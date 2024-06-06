@@ -17,4 +17,6 @@ public class UserDto {
     private Long id;
     private String name;
     private List<Long> courseIds;
+    private Long tgId;
+    private Boolean receiveTgNotification;
 }

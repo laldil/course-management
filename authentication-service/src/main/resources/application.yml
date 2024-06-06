@@ -29,3 +29,4 @@ application:
   config:
     url:
       score-service: http://localhost:8085/api/score
+      notification-service: http://localhost:8086/api/notification

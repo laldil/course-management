@@ -12,6 +12,7 @@
         <module name="discovery-server" />
         <module name="gateway-service" />
         <module name="file-service" />
+        <module name="notification-service" />
         <module name="score-service" />
       </profile>
     </annotationProcessing>
@@ -28,6 +29,7 @@
       <module name="discovery-server" options="-parameters" />
       <module name="file-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
       <module name="quiz-service" options="-parameters" />
       <module name="score-service" options="-parameters" />
     </option>

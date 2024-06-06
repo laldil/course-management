@@ -3,6 +3,7 @@ package kz.edu.astanait.authentiactionservice.controller;
 import kz.edu.astanait.authentiactionservice.controller.api.ApiDataResponse;
 import kz.edu.astanait.authentiactionservice.dto.CreateUserRequest;
 import kz.edu.astanait.authentiactionservice.dto.CreateUserResponse;
+import kz.edu.astanait.authentiactionservice.dto.LinkTgRequest;
 import kz.edu.astanait.authentiactionservice.dto.LoginRequest;
 import kz.edu.astanait.authentiactionservice.dto.LoginResponse;
 import kz.edu.astanait.authentiactionservice.service.AuthService;
@@ -50,6 +51,26 @@ public class AuthController {
     public ResponseEntity<ApiDataResponse<Boolean>> validateToken(@RequestParam String token) {
         try {
             return ResponseEntity.ok().body(ApiDataResponse.create(authService.validateToken(token)));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiDataResponse.failed(e.getMessage()));
+        }
+    }
+
+    @PostMapping("/linkTg")
+    public ResponseEntity<?> linkTg(@RequestParam Long chatId, @RequestParam String email) {
+        try {
+            authService.linkTgToUser(chatId, email);
+            return ResponseEntity.ok().body("success");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiDataResponse.failed(e.getMessage()));
+        }
+    }
+
+    @PostMapping("/confirmLinkTg")
+    public ResponseEntity<?> linkTg(@RequestBody LinkTgRequest request) {
+        try {
+            authService.confirmLinkTg(request);
+            return ResponseEntity.ok().body("success");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiDataResponse.failed(e.getMessage()));
         }
