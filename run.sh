@@ -2,7 +2,7 @@
 
 mkdir -p logs
 
-services=("authentication-service" "course-service" "discovery-server" "file-service" "gateway-service" "score-service")
+services=("authentication-service" "course-service" "discovery-server" "file-service" "gateway-service" "score-service" "notification-service")
 
 for service in "${services[@]}"
 do
