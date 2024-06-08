@@ -4,7 +4,6 @@ import kz.edu.astanait.courseservice.client.NotificationClient;
 import kz.edu.astanait.courseservice.client.UserClient;
 import kz.edu.astanait.courseservice.dto.GradeDto;
 import kz.edu.astanait.courseservice.dto.submission.SubmissionDto;
-import kz.edu.astanait.courseservice.model.CourseEntity;
 import kz.edu.astanait.courseservice.repository.SubmissionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +38,7 @@ public class NotificationAspect {
             return;
         }
 
-        String message = "Your submission has been graded. Grade: " + result.getGrade().getGrade();
+        String message = "Hello, your submission for task " + submission.getSubmissionBox().getTitle() + " of the " + submission.getSubmissionBox().getModule().getCourse().getTitle() + " get just graded by your teacher. Your grade is: " + result.getGrade().getGrade();
         try {
             notificationClient.sendTgMessage(user.getTgId(), message);
             log.info("Notification sent successfully to user: {}", submission.getUploadedById());

@@ -55,7 +55,7 @@ public class SubmissionBoxEntity {
     private List<SubmissionEntity> submissions = new ArrayList<>();
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "module_id")
     private ModuleEntity module;
 

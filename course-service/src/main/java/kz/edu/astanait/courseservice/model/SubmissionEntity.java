@@ -65,7 +65,7 @@ public class SubmissionEntity {
     private GradeEntity grade;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "submission_box_id")
     private SubmissionBoxEntity submissionBox;
 

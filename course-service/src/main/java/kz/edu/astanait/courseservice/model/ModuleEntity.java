@@ -52,7 +52,7 @@ public class ModuleEntity {
     private List<SubmissionBoxEntity> submissionBoxes = new ArrayList<>();
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id", nullable = false)
     private CourseEntity course;
 }
