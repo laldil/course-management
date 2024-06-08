@@ -13,6 +13,7 @@ import kz.edu.astanait.authentiactionservice.model.enums.Role;
 import kz.edu.astanait.authentiactionservice.repository.RoleRepository;
 import kz.edu.astanait.authentiactionservice.repository.UserRepository;
 import kz.edu.astanait.authentiactionservice.utils.SecurityUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.User;
@@ -32,6 +33,7 @@ import java.util.Set;
  * @since 24.03.2024
  */
 
+@Slf4j
 @Service
 public class UserService implements UserDetailsService {
 
@@ -68,9 +70,20 @@ public class UserService implements UserDetailsService {
     }
 
     public UserProfileDto getProfile() {
-        UserEntity user = userRepository.findById(SecurityUtils.getCurrentId())
+        var user = userRepository.findById(SecurityUtils.getCurrentId())
                 .orElseThrow(() -> new BadCredentialsException("User not found"));
-        return UserMapper.INSTANCE.mapToProfile(user);
+
+        var profile = UserMapper.INSTANCE.mapToProfile(user);
+
+        try {
+            var score = scoreClient.getByUserId(user.getId());
+            profile.setCurrentScore(score.getCurrentScore());
+            profile.setAllTimeScore(score.getAllTimeScore());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return profile;
     }
 
     public List<UserShortInfoDto> getUserList(List<Long> ids) {
@@ -103,12 +116,12 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public UserProfileDto updateById(Long id, UserProfileDto user) {
+    public UserProfileDto updateById(Long id, UpdateUserRequest request) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new BadCredentialsException("User not found"));
-        UserMapper.INSTANCE.updateFromDto(user, userEntity);
+        UserMapper.INSTANCE.updateFromDto(request, userEntity);
 
-        if (user.getRoles() != null) {
-            List<RoleEntity> roles = roleRepository.findByRoleIn(user.getRoles().stream().toList());
+        if (request.getRoles() != null) {
+            List<RoleEntity> roles = roleRepository.findByRoleIn(request.getRoles().stream().toList());
             userEntity.setRoles(new HashSet<>(roles));
         }
 

@@ -73,6 +73,16 @@ public class JwtTokenUtils {
         return getAllClaims(token).get("role", List.class);
     }
 
+    public Map<String, Object> getDetails(String token) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", getIdFromToken(token));
+        return claims;
+    }
+
+    public Long getIdFromToken(String token) {
+        return getAllClaims(token).get("id", Long.class);
+    }
+
     private Claims getAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())

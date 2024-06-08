@@ -7,7 +7,6 @@ import kz.edu.astanait.authentiactionservice.dto.UserProfileDto;
 import kz.edu.astanait.authentiactionservice.dto.UserShortInfoDto;
 import kz.edu.astanait.authentiactionservice.model.enums.Role;
 import kz.edu.astanait.authentiactionservice.service.UserService;
-import kz.edu.astanait.authentiactionservice.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -72,7 +71,7 @@ public class UserController {
     }
 
     @PatchMapping("/user/{id}")
-    public ResponseEntity<ApiDataResponse<UserProfileDto>> updateById(@PathVariable Long id, @RequestBody UserProfileDto user) {
+    public ResponseEntity<ApiDataResponse<UserProfileDto>> updateById(@PathVariable Long id, @RequestBody UpdateUserRequest user) {
         try {
             return ResponseEntity.ok().body(ApiDataResponse.create(userService.updateById(id, user)));
         } catch (Exception e) {

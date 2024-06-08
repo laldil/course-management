@@ -4,6 +4,7 @@ import kz.edu.astanait.authentiactionservice.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -20,4 +21,9 @@ public class UserProfileDto {
     private String email;
     private Set<Role> roles;
     private List<Long> courseIds;
+    private String tgUserName;
+    private Boolean receiveTgNotification;
+    private Boolean receiveEmailNotification;
+    private BigDecimal currentScore;
+    private BigDecimal allTimeScore;
 }

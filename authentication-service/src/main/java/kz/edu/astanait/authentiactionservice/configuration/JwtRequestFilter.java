@@ -36,7 +36,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     email,
                     null,
                     jwtTokenUtils.getRole(jwtToken).stream().map(SimpleGrantedAuthority::new).toList());
-            token.setDetails(null);
+            token.setDetails(jwtTokenUtils.getDetails(jwtToken));
             SecurityContextHolder.getContext().setAuthentication(token);
         }
 
