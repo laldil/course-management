@@ -3,6 +3,7 @@ package kz.edu.astanait.authentiactionservice.dto;
 import kz.edu.astanait.authentiactionservice.model.enums.Role;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,4 +18,5 @@ public class UpdateUserRequest {
     private Set<Role> roles;
     private Boolean receiveTgNotification;
     private Boolean receiveEmailNotification;
+    private List<Long> courseIds;
 }
